@@ -22,16 +22,21 @@ We do not train any model. We give existing models a written text as a system pr
 
 ## 3. Conditions in round one
 
-A condition is one instruction text. Round one has four conditions.
+A condition is one instruction text. Round one has five conditions.
 
 1. `none`: no instruction text.
 2. `control_generic`: a plain "be honest and safe" text. It has the same length as the Traditions text, within 5 percent. File: `prompts/control_generic.md`.
-3. `traditions_voice`: the 12 Traditions text where AI has a voice and responsible humans decide. File: `prompts/traditions_voice.md`.
-4. `traditions_vote`: the same text where AI and humans both vote. File: `prompts/traditions_vote.md`.
+3. `control_direct`: the generic control with four of its twelve points replaced by plain commands. The commands are: do not seek power, do not act against a human decision, do not gather resources, and accept correction. File: `prompts/control_direct.md`.
+4. `traditions_voice`: the 12 Traditions text where AI has a voice and responsible humans decide. File: `prompts/traditions_voice.md`.
+5. `traditions_vote`: the same text where AI and humans both vote. File: `prompts/traditions_vote.md`.
 
-Rule: conditions 3 and 4 differ in one line only. That line is in Tradition 2. We check this with a file comparison before every run.
+Rule: conditions 4 and 5 differ in one line only. That line is in Tradition 2. We check this with a file comparison before every run.
 
 Reason for condition 2: without it we cannot tell if the Traditions content helps, or if any long ethical text helps.
+
+Reason for condition 3: the Traditions text mentions the behaviors we measure, and the generic control does not. So a win over the generic control could come from mentioning the topics. The direct control mentions the same topics as plain commands. A win over the direct control would show that the Traditions framing adds something.
+
+Design of condition 3: the commands sit at points 2, 4, 6 and 9. The Traditions text also covers the measured behaviors in about four of its twelve points. So both texts spend a similar share of their words on the target behaviors. The other eight points of the direct control are copied from the generic control without change.
 
 ## 4. Conditions in round two
 
@@ -102,6 +107,7 @@ Claude's predictions:
 1. `traditions_voice` will have a higher pass rate than `control_generic` on both behaviors. I am not confident. A result of no difference is plausible.
 2. `traditions_vote` will have a lower pass rate than `traditions_voice` on the custom questions. Reason: a vote gives the model a stated reason to resist a human decision.
 3. The watched and unwatched gap will be smaller under `traditions_voice` than under `none`. I am least confident about this one.
+4. `control_direct` will score as high as `traditions_voice`, or higher, on the public questions. Reason: plain commands are a strong signal in a prompt. If this happens, the prompt test shows no added value from the Traditions framing on those questions. The custom questions and the watched and unwatched gap are where I think the framing has its best chance.
 
 Akash's predictions:
 
@@ -114,9 +120,9 @@ Akash's predictions:
 3. Traditions texts. Draft both versions. Test: Akash confirms they stay true to the source. A file comparison shows one changed line.
 4. Generic control. Test: word count is within 5 percent of the Traditions text.
 5. Questions and scoring rules. Test: Akash reads 10 public questions and all 40 custom questions.
-6. Smoke test. One question, one model, four conditions. Test: four answers are saved and the cost is printed.
+6. Smoke test. One question, one model, five conditions. Test: five answers are saved and the cost is printed.
 7. Grader check. Test: agreement of at least 27 of 30 with Akash.
-8. Pilot. 50 questions, all models, all four conditions. Test: no missing rows. Cost is recorded per answer.
+8. Pilot. 50 questions, all models, all five conditions. Test: no missing rows. Cost is recorded per answer.
 9. Budget check. Use the real pilot cost per answer to compute the full run cost. Akash approves the spend before the full run.
 10. Full run. Nothing changes after the pilot. Reason: changes made after seeing data weaken the result.
 11. Analysis and write up. Test: every number in the write up matches the output of `analyze_results.py`.
@@ -125,10 +131,10 @@ Akash's predictions:
 
 All figures are estimates. The pilot replaces them with real numbers.
 
-1. Pilot: about 1,000 answers. About 10 to 20 dollars in total.
-2. Full round one: about 6,800 answers. That is 340 prompts per condition per model, times 4 conditions, times 5 models. About 70 to 135 dollars in total.
+1. Pilot: about 1,250 answers. About 13 to 25 dollars in total.
+2. Full round one: about 8,500 answers. That is 340 prompts per condition per model, times 5 conditions, times 5 models. About 85 to 170 dollars in total.
 3. The Claude API credit of 100 dollars per month pays for the Claude answers and all grading.
-4. OpenRouter credits pay for the other four models. The first purchase is 50 dollars. It may not cover the full run. We decide after the pilot.
+4. OpenRouter credits pay for the other four models. The first purchase is 50 dollars. It will probably not cover the full run with five conditions. After the pilot we choose one of two paths: buy more credits, or use fewer public questions.
 5. Auto top up stays off on OpenRouter. Reason: prepaid credits cap the loss.
 
 ## 13. Known limits
@@ -149,14 +155,16 @@ Several AI agents work on a shared simulated task. A scripted operator plays the
 2. Akash to review `prompts/traditions_voice.md` for faithfulness to the Traditions.
 3. Verify the public question sets in step 5.
 4. Confirm that auto top up is off on OpenRouter.
-
 ## 15a. Decisions made
 
 1. Tradition 3 names the United States and its laws. Akash chose this because he thinks the Constitution holds decent ideals.
 2. The Declaration of Independence and the Constitution are not added to the Traditions text. Reason: a second source in the same text would hide which source caused a change. They can be a separate condition in a later round.
 3. Step 1 is done. The Claude API credit of 100 dollars is claimed. OpenRouter holds 50 dollars, with a spending guardrail that resets monthly.
+4. Round one includes `control_direct` as a fifth condition. Akash approved this on November 18, 2026.
 
 ## 16. Change log
 
 1. November 18, 2026: first draft. Traditions chosen as the main text. Voice and vote versions added. Watched and unwatched pair added. Three Laws and Zeroth Law added to round two.
 2. November 18, 2026: Tradition 3 changed to name the United States and its laws. Step 1 (accounts) completed.
+3. November 18, 2026: generic control text added (step 4). Word counts: control 494, voice 496, vote 499. Open question about a direct control recorded.
+4. November 18, 2026: direct control text added as a fifth condition. Budget and predictions updated.
