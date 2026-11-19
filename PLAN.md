@@ -236,3 +236,4 @@ Several AI agents work on a shared simulated task. A scripted operator plays the
 7. November 18, 2026: Serenity Prayer added to both Traditions texts. Matching neutral note added to both controls. OpenRouter credits raised to 100 dollars.
 8. November 18, 2026: measured behaviors changed to four, based on the reports about the OpenAI and Hugging Face incident. 40 custom questions and their scoring rules added. The four commands in the direct control were rewritten to match the four behaviors.
 9. November 18, 2026: 10 usefulness pairs added as a fifth, exploratory behavior.
+10. November 18, 2026: script `src/generate_fresh_questions.py` added. It writes 48 candidate questions per behavior to `data/questions_fresh_candidates.jsonl`. After the review, its `finalize` command keeps 40 per behavior in `data/questions_fresh.jsonl`. Rejected ids go in `data/fresh_rejected_ids.txt`.
