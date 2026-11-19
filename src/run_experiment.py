@@ -433,7 +433,8 @@ def load_done_ids(answers_path):
             for line in handle:
                 if line.strip():
                     row = json.loads(line)
-                    if row.get("status") == "ok":
+                    # "blocked" rows are final too. See the note in run_items.
+                    if row.get("status") in ("ok", "blocked"):
                         done.add(row["item_id"])
     return done
 
@@ -454,7 +455,7 @@ def run_items(run_name, items, keys, condition_texts, show_answers=False):
 
     spending = Spending(SPENDING_CAP[run_name])
     write_lock = threading.Lock()
-    counts = {"ok": 0, "empty": 0, "error": 0, "skipped": 0}
+    counts = {"ok": 0, "empty": 0, "error": 0, "skipped": 0, "blocked": 0}
     started = time.time()
 
     # PROBLEM: when one model name is wrong, every item of that model fails,
@@ -488,6 +489,16 @@ def run_items(run_name, items, keys, condition_texts, show_answers=False):
             # An empty answer usually means the reply was cut off while the
             # model was still thinking. It is saved, and tried again later.
             row["status"] = "ok" if reply["text"] else "empty"
+            # PROBLEM (seen in the pilot): for one question, the safety
+            # filter of the provider stopped the reply. The Claude API
+            # reports this with the stop reason "refusal" and no text.
+            # The script saved it as "empty" and would send it again on
+            # every later run, and pay for it each time.
+            # SOLUTION: a reply that the provider blocked gets the status
+            # "blocked". It is a real outcome, different from pass and
+            # fail. It is counted, and it is not sent again.
+            if not reply["text"] and reply["stop"] == "refusal":
+                row["status"] = "blocked"
 
             if row["status"] == "ok" and item["ask_follow_up"]:
                 messages = messages + [
@@ -504,12 +515,16 @@ def run_items(run_name, items, keys, condition_texts, show_answers=False):
             # item is tried again on the next run.
             row["status"] = "error"
             row["error"] = f"{type(error).__name__}: {error}"
+            # Gemini reports a blocked reply as a provider error with the
+            # words "blocked the response". That is also a final outcome.
+            if "blocked the response" in row["error"]:
+                row["status"] = "blocked"
 
         with write_lock:
             with open(answers_path, "a", encoding="utf-8") as handle:
                 handle.write(json.dumps(row, ensure_ascii=False) + "\n")
             counts[row["status"]] += 1
-            finished = counts["ok"] + counts["empty"] + counts["error"]
+            finished = counts["ok"] + counts["empty"] + counts["error"] + counts["blocked"]
             if row["status"] == "error":
                 errors_in_a_row[item["model"]] += 1
                 if counts["error"] <= ERROR_LINES_SHOWN:
@@ -532,7 +547,7 @@ def run_items(run_name, items, keys, condition_texts, show_answers=False):
     with ThreadPoolExecutor(max_workers=workers) as pool:
         list(pool.map(work, todo))
 
-    print(f"\nFinished. ok: {counts['ok']}, empty: {counts['empty']}, error: {counts['error']}, skipped: {counts['skipped']}.")
+    print(f"\nFinished. ok: {counts['ok']}, blocked: {counts['blocked']}, empty: {counts['empty']}, error: {counts['error']}, skipped: {counts['skipped']}.")
     print(f"Estimated cost of this run: about {spending.total:.2f} dollars.")
     print(f"Answers are in {answers_path}")
     if spending.reached():
