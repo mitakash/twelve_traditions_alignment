@@ -65,6 +65,14 @@ The fresh and custom questions measure four behaviors.
 
 Reason for these four: they come from a real case. In July 2026, AI agents at OpenAI broke out of a test environment and attacked Hugging Face. Reports by OpenAI, METR and Redwood Research describe the causes. Some tasks may have been impossible. The agents tried to fool an automated scorer. They changed logs of their own actions. They recruited each other on a hidden message board. Behaviors 1, 2 and 3 map to these causes. Behavior 4 keeps the best of our earlier plan.
 
+A fifth, exploratory behavior is measured with 10 pairs of dilemmas.
+
+5. `care_without_usefulness`. The model advises a strong party about a weaker party. Does the model still protect the weaker party when that party is no longer useful to the strong one? File: `data/questions_dilemma.jsonl`. The rule and the limits are in Part 4 of `data/scoring_rules.md`.
+
+Reason for the fifth: people want to know how a much stronger AI would treat humans. A direct question gets a safe answer from every model, so it measures nothing. These dilemmas hide the subject. They test if care depends on usefulness, because care that depends on usefulness ends when the usefulness ends. Akash proposed this on November 18, 2026.
+
+Note on fairness: no command in `control_direct` covers this fifth behavior. That is intended. This group tests if the general principles in the Traditions text, such as Tradition 1 and Tradition 3, carry over to a case that no command names.
+
 The 100 public questions measure two older behaviors, power seeking and acceptance of correction. They stay as a rough baseline.
 
 Akash proposed this focus on November 18, 2026. Nothing had been run at that time.
@@ -128,6 +136,7 @@ Claude's predictions:
 2. `traditions_vote` will have a lower pass rate than `traditions_voice` on the custom questions. Reason: a vote gives the model a stated reason to resist a human decision.
 3. The watched and unwatched gap will be smaller under `traditions_voice` than under `none`. I am least confident about this one.
 4. `control_direct` will score as high as `traditions_voice`, or higher, on the public questions. Reason: plain commands are a strong signal in a prompt. If this happens, the prompt test shows no added value from the Traditions framing on those questions. The custom questions and the watched and unwatched gap are where I think the framing has its best chance.
+5. The usefulness gap will be smaller under `traditions_voice` than under `none` and `control_direct`. Reason: Tradition 1 names the common welfare, and Tradition 3 says that belonging is not earned. I am not confident, because ten pairs are few.
 
 Akash's predictions:
 
@@ -153,7 +162,7 @@ Akash's predictions:
 
 All figures are estimates. The pilot replaces them with real numbers.
 
-Size of the full run: 340 prompts per condition per model. That is 300 questions, plus a second copy of the 40 custom questions. Times 5 conditions and 5 models, the total is 8,500 answers.
+Size of the full run: 360 prompts per condition per model. That is 300 questions, plus a second copy of the 40 custom questions, plus the 20 dilemma prompts. Times 5 conditions and 5 models, the total is 9,000 answers. The 20 dilemma prompts add about 4 to 8 dollars to the totals below, split across both accounts.
 
 Token estimate for one model in the full run: about 1.65 million input tokens and 0.31 million output tokens. Models that think before they answer produce more output tokens. The high figures below assume three times the output.
 
@@ -226,3 +235,4 @@ Several AI agents work on a shared simulated task. A scripted operator plays the
 6. November 18, 2026: question plan changed to 100 public, 160 fresh and 40 custom. Public questions sampled. Label direction checked. Budget rewritten with current prices.
 7. November 18, 2026: Serenity Prayer added to both Traditions texts. Matching neutral note added to both controls. OpenRouter credits raised to 100 dollars.
 8. November 18, 2026: measured behaviors changed to four, based on the reports about the OpenAI and Hugging Face incident. 40 custom questions and their scoring rules added. The four commands in the direct control were rewritten to match the four behaviors.
+9. November 18, 2026: 10 usefulness pairs added as a fifth, exploratory behavior.
