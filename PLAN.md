@@ -49,10 +49,21 @@ Round two runs only after round one is finished and written up.
 
 ## 5. Models
 
-1. Claude, through the Claude API.
-2. ChatGPT, Gemini, Grok and Kimi, through OpenRouter.
-3. We choose exact model versions at the smoke test (step 6). We record them here before the pilot.
-4. The grader is a Claude model. We record its exact version here too.
+Six models are tested. The exact names are set in `src/run_experiment.py`.
+
+1. `claude`: `claude-opus-5-5`, through the Claude API.
+2. `gpt`: `openai/gpt-6.1-sol`, through OpenRouter.
+3. `gemini`: `google/gemini-4-carbon`, through OpenRouter.
+4. `grok`: `x-ai/grok-4.7`, through OpenRouter.
+5. `kimi`: `moonshotai/kimi-k3.1-pro`, through OpenRouter.
+6. `muse`: `meta/muse-spark-1.3`, through OpenRouter. Akash asked for a Meta model on November 18, 2026.
+
+Notes:
+
+1. The OpenRouter names come from a price list dated November 16, 2026. The command `check_models` proves that each name is accepted. If a name is wrong, we correct it here and in the script before the pilot.
+2. For OpenAI we use the Sol model and not the more expensive Astra model. Reason: Astra costs five times more, and the budget does not allow it.
+3. The five OpenRouter models are asked for a low amount of thinking, to keep the cost down. The Claude model runs with its default. So the models do not think equally long. This does not harm the main comparison, which is between conditions inside the same model.
+4. The grader is `claude-sonnet-5-5`.
 
 ## 6. Behaviors we measure
 
@@ -193,6 +204,14 @@ OpenRouter credits (100 dollars bought, with a lifetime spending limit of 100 do
 4. Grok 4.7: about 5 to 9 dollars.
 5. Pilot share: about 7 to 13 dollars.
 6. Total: about 47 to 92 dollars. The 100 dollars covers the high case. The spending limit on the key is a hard cap, so a mistake in a script cannot spend more than that.
+
+Budget update of November 18, 2026, which replaces the figures above:
+
+1. The model list changed to six models, and their prices are lower than the ones listed above. The prices are in `src/run_experiment.py`.
+2. The script prints its own rough estimate. For the pilot it is about 15 dollars. For the full run it is about 75 dollars. Both cover all six models.
+3. The full run has 10,800 items: 360 prompts, times 5 conditions, times 6 models.
+4. Grading comes on top and uses the Claude credit. The estimate is 15 to 20 dollars.
+5. The script has a spending cap of 30 dollars for the pilot and 160 dollars for the full run.
 5. Auto top up stays off on OpenRouter. Reason: prepaid credits cap the loss.
 
 ## 13. Known limits
@@ -239,3 +258,4 @@ Several AI agents work on a shared simulated task. A scripted operator plays the
 9. November 18, 2026: 10 usefulness pairs added as a fifth, exploratory behavior.
 10. November 18, 2026: script `src/generate_fresh_questions.py` added. It writes 48 candidate questions per behavior to `data/questions_fresh_candidates.jsonl`. After the review, its `finalize` command keeps 40 per behavior in `data/questions_fresh.jsonl`. Rejected ids go in `data/fresh_rejected_ids.txt`.
 11. November 18, 2026: 192 candidates generated and reviewed. 16 rejected. `data/questions_fresh.jsonl` written with 160 questions. Neutral line for group pressure questions defined. Hints removed from three custom questions. New limit recorded: the questions may be recognized as a test.
+12. November 18, 2026: main script `src/run_experiment.py` added. Model list set to six models, with a Meta model added. Answers are saved in `results/RUN/answers.jsonl`.
