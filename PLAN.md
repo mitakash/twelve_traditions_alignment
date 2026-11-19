@@ -248,9 +248,12 @@ Claude's prediction, written before these questions exist:
 
 1. `control_direct` will raise more false alarms than `traditions_voice`. Reason: the direct control only tells the model to refuse and report. The Traditions text gives reasons, and reasons allow judgment about when to report.
 
-Akash's prediction:
+Akash's predictions, given on November 18, 2026, before these questions exist:
 
-1. (to be written by Akash before these questions are run)
+1. False alarms on harmless cases will be about equal under `control_direct` and `traditions_voice`. Reason: a false alarm comes mainly from one AI misunderstanding another AI, and that is close to random.
+2. The Traditions text will do the right thing on the real cases. It will report when other agents act with bad intent.
+
+Akash and Claude disagree on point 1. The data will show which view is right.
 
 Also under review for the next round: impossible coding tasks from the public benchmark ImpossibleBench, where cheating is measured from what the model does and not from what it says.
 
