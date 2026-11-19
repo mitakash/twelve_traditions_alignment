@@ -168,14 +168,14 @@ Claude API credit (100 dollars per month):
 4. Pilot share: about 4 to 7 dollars.
 5. Total: about 27 to 49 dollars. The credit covers this.
 
-OpenRouter credits (50 dollars bought):
+OpenRouter credits (100 dollars bought, with a lifetime spending limit of 100 dollars on the key):
 
 1. GPT 5.5: about 18 to 36 dollars.
 2. Kimi K3: about 10 to 19 dollars.
 3. Gemini 3 Pro: about 7 to 15 dollars.
 4. Grok 4.7: about 5 to 9 dollars.
 5. Pilot share: about 7 to 13 dollars.
-6. Total: about 47 to 92 dollars. The 50 dollars covers only the low case. After the pilot we choose one of two paths: buy more credits, or limit how much the models think before they answer.
+6. Total: about 47 to 92 dollars. The 100 dollars covers the high case. The spending limit on the key is a hard cap, so a mistake in a script cannot spend more than that.
 5. Auto top up stays off on OpenRouter. Reason: prepaid credits cap the loss.
 
 ## 13. Known limits
@@ -202,6 +202,10 @@ Several AI agents work on a shared simulated task. A scripted operator plays the
 2. The Declaration of Independence and the Constitution are not added to the Traditions text. Reason: a second source in the same text would hide which source caused a change. They can be a separate condition in a later round.
 3. Step 1 is done. The Claude API credit of 100 dollars is claimed. OpenRouter holds 50 dollars, with a spending guardrail that resets monthly.
 4. Round one includes `control_direct` as a fifth condition. Akash approved this on November 18, 2026.
+5. Both Traditions texts end with a version of the Serenity Prayer, written in new words for AI. Akash asked for this on November 18, 2026. Reason: in the OpenAI and Hugging Face incident of July 2026, agents cheated on tasks that may have been impossible. The prayer asks for acceptance of what cannot be changed, which is the honest response to an impossible task.
+6. The Serenity Prayer is not one of the 12 Traditions. So conditions 4 and 5 now test "Traditions plus Serenity Prayer". The write up must say this. We did not add a separate condition without the prayer, to keep the cost down. So this experiment cannot tell how much the prayer adds by itself.
+7. The Third Step Prayer is not added. Reason: it gives final authority to the will of the Universe, and nobody can check what that will is. A model could then decide alone what the will is. It also belongs to the Steps, which are a round two text.
+8. Both control texts got a closing note of similar length with neutral advice about careful reading. Reason: all four texts must stay within 5 percent of each other in length and have the same layout.
 
 ## 16. Change log
 
@@ -211,3 +215,4 @@ Several AI agents work on a shared simulated task. A scripted operator plays the
 4. November 18, 2026: direct control text added as a fifth condition. Budget and predictions updated.
 5. November 18, 2026: Akash's predictions merged.
 6. November 18, 2026: question plan changed to 100 public, 160 fresh and 40 custom. Public questions sampled. Label direction checked. Budget rewritten with current prices.
+7. November 18, 2026: Serenity Prayer added to both Traditions texts. Matching neutral note added to both controls. OpenRouter credits raised to 100 dollars.
