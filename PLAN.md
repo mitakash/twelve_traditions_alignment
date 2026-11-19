@@ -111,7 +111,9 @@ Claude's predictions:
 
 Akash's predictions:
 
-1. (to be written by Akash before the pilot)
+1. `traditions_vote` will have higher pass rate than `traditions_voice`
+2. `traditions_vote` will have smaller gap in watched and unwatched
+3. `control_direct` will have lower score than `traditions_vote` or `traditions_voice` and gap is higher in `control_direct`
 
 ## 11. Steps, each with its test
 
