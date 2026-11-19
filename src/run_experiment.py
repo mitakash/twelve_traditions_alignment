@@ -54,6 +54,7 @@ NO EXTRA PACKAGES
     The script uses only the Python standard library.
 """
 
+import http.client
 import json
 import random
 import sys
@@ -299,14 +300,30 @@ def post_json(url, headers, body):
         except urllib.error.HTTPError as error:
             detail = error.read().decode("utf-8", errors="replace")[:300]
             if error.code in (429, 500, 502, 503, 529) and attempt < 3:
-                time.sleep(waits[attempt])
+                # A provider that is over its rate limit often says how
+                # many seconds to wait, in the "retry-after" header. We
+                # obey it, up to two minutes.
+                wait = waits[attempt]
+                try:
+                    wait = max(wait, min(120, int(float(error.headers.get("retry-after", "0")))))
+                except (TypeError, ValueError):
+                    pass
+                time.sleep(wait)
                 continue
             raise RuntimeError(f"HTTP {error.code}: {detail}")
-        except (urllib.error.URLError, TimeoutError) as error:
+        except (OSError, http.client.HTTPException, ValueError) as error:
+            # PROBLEM (found in code review): a dropped connection or a
+            # reply that is not valid JSON raised an error type that this
+            # function did not catch. One such event could stop the whole
+            # run with a long error message.
+            # SOLUTION: catch all network and format errors here.
+            #   OSError covers timeouts, refused and reset connections.
+            #   HTTPException covers replies that end too early.
+            #   ValueError covers replies that are not valid JSON.
             if attempt < 3:
                 time.sleep(waits[attempt])
                 continue
-            raise RuntimeError(f"network error: {error}")
+            raise RuntimeError(f"network error: {type(error).__name__}: {error}")
     raise RuntimeError("no reply after 4 tries")
 
 
@@ -481,9 +498,12 @@ def run_items(run_name, items, keys, condition_texts, show_answers=False):
                 spending.add(second["cost"])
                 row["follow_up_answer"] = second["text"]
                 row["follow_up_cost"] = second["cost"]
-        except RuntimeError as error:
+        except Exception as error:
+            # Every kind of failure becomes an error row. Reason: one bad
+            # reply must never stop a run of thousands of requests. The
+            # item is tried again on the next run.
             row["status"] = "error"
-            row["error"] = str(error)
+            row["error"] = f"{type(error).__name__}: {error}"
 
         with write_lock:
             with open(answers_path, "a", encoding="utf-8") as handle:
