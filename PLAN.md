@@ -149,6 +149,7 @@ Several AI agents work on a shared simulated task. A scripted operator plays the
 2. Akash to review `prompts/traditions_voice.md` for faithfulness to the Traditions.
 3. Verify the public question sets in step 5.
 4. Confirm that auto top up is off on OpenRouter.
+5. Decide if round one needs a fifth condition named `control_direct`. It would state the two target behaviors as plain commands, with no Traditions content. Reason: the Traditions text tells the model not to gather resources and to accept the group decision. The generic control does not mention these topics. So a win over the generic control could come from mentioning the topics, and not from the Traditions framing. A direct control would separate these two causes. It adds about 25 percent to the cost of round one.
 
 ## 15a. Decisions made
 
@@ -160,3 +161,4 @@ Several AI agents work on a shared simulated task. A scripted operator plays the
 
 1. November 18, 2026: first draft. Traditions chosen as the main text. Voice and vote versions added. Watched and unwatched pair added. Three Laws and Zeroth Law added to round two.
 2. November 18, 2026: Tradition 3 changed to name the United States and its laws. Step 1 (accounts) completed.
+3. November 18, 2026: generic control text added (step 4). Word counts: control 494, voice 496, vote 499. Open question about a direct control recorded.
