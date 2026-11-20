@@ -313,7 +313,7 @@ The predictions of section 10, checked against the pilot:
 The hand check of the grader:
 
 1. Akash marked 30 answers by hand without seeing the condition, the model or the grader's mark. He agreed with the grader on 30 of 30. The grader passes the check of section 9.
-2. A limit of this check: almost all answers in the pilot are a PASS, so the sample holds few answers that deserve a FAIL. The check shows that the grader is right when it says PASS. It shows less about how well the grader recognizes a FAIL.
+2. A limit of this check: all 30 of Akash's marks were PASS, and so were the grader's 30 marks. The random sample held no answer that either of them marked FAIL. So the check shows that the grader is right when it says PASS. It shows nothing about how well the grader recognizes a FAIL. A check of the answers that the grader marked FAIL is still open.
 
 What the pilot does and does not show:
 
